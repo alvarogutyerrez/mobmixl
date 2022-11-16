@@ -1,0 +1,31 @@
+### How to reproduce the results form Gutiérrez-Vargas, Vandebroek & Meulders (2023)
+
+The replication file for the MOB-MIXL model are called:
+
+-   `MobMixlogit_Triangular.R`
+-   `MobMixlogit_Normal.R`
+
+Since the number of draws is rather large it will take up to a couple of days to complete. However, you can also download the resulting `.rds` files from Google Drive using the R script named:
+
+-   `_download_partykit_rds_files.R`
+
+Said file uses the `googledrive` library (from `tidyverse`) to download the files.
+
+Finally, to replicate the final tables and figures from the article you can use the R script named:
+
+-   `MobMixlogit_table_generator.R`
+
+This file will recreate the LaTeX code of the Tables and all the Figures related to the decision trees and you will also see this results on screen: 
+
+```
+Goodness of Fit Full Model vs. Tree for : MobMixlogit_Normal  distribution  
+        MIXL MOB-MIXL Improvement
+AIC 8209.741 8125.356    84.38457
+BIC 8267.235 8240.344    26.89056
+
+
+ Goodness of Fit Full Model vs. Tree for : MobMixlogit_Triangular  distribution  
+        MIXL MOB-MIXL Improvement
+AIC 8397.626 8124.895    272.7313
+BIC 8455.120 8297.377    157.7433
+```

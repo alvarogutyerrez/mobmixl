@@ -1,0 +1,133 @@
+---
+title: "Replication files for Gutiérrez-Vargas, Vandebroek & Meulders (2023) "
+output: github_document
+date: '2022-11-15'
+---
+
+This repository has all the necesary functions to replicate the results form Gutiérrez-Vargas, Vandebroek & Meulders (2023) forthcoming at the Journal of Choice Modelling. 
+
+The source code is contained in a small R package I developed to store all the necesary functions which is called `MobMixlogit` and can be found in the folde `\src` and can be installed locally by running the R script `\src\install_MobMixlogit.R`
+
+The different parts of the article are organized in different folders:
+
+* `\simulations_replication`: contains the replications from sections 5 and 6.
+* `\empirical_application`: contains the replications from section 7.
+
+---------------------------------------
+
+
+```{r setup, include=FALSE}
+knitr::opts_chunk$set(echo = TRUE)
+```
+
+
+
+## Small example:   Decision Tree with a Mixed Logit at the end leaves.
+
+Here is a brief illustration on how to implement a Mixed Logit at the end leaves using the MOB algorithm. We start by creating some data that contains a partition.
+
+```{r dgp , message=FALSE}
+library(MobMixlogit)
+library(partykit)
+library(mlogit)
+# Simulate some data with a partition (see Figure 2a on the article)
+df <- MobMixlogit::dgp_tree(N     = 500, 
+                            t     = 10,
+                            xi    = 0.5, 
+                            delta = 1) 
+# Create the choice variable for the wide format
+df$choice <- with(df,ave(x = altern * chosen,
+                         group = id,
+                         FUN = max))
+
+# Delete chosen variable
+df$chosen <- NULL ; df$id_choice_situation_of_individual_n <- NULL
+# Reshape from long to wide.
+df_wide <- stats::reshape(data      = df,
+                          idvar     = c("id","id_ind"),
+                          timevar   = "altern",
+                          v.names   = c("x1", "x2"),
+                          direction = "wide",
+                          sep = "_")
+```
+
+Now we have to create an auxiliar function that will be usefull to run the Mixed Logit model using `mlogit`.
+
+```{r mixl_for_partykit , message=FALSE}
+# Create a auxiliar function to make mlogit work together with partykit.
+mixl_for_partykit <- function(y,
+                              x = NULL,
+                              start = NULL,
+                              weights = NULL,
+                              offset = NULL, ...) {
+
+  #cbind() x and y
+  yx <- cbind(y,x)
+  #First declare dfidx data
+  d <- dfidx::dfidx(data = yx,
+             shape = "wide",
+             choice = "choice",
+             varying = 2:7, ## first if "y", then "x's" and finally "identifiers".
+             sep = "_",
+             idx = list(c("id", "id_ind")),  #obs= choice situation; id = individual
+             idnames = c(NA, "altern"))
+
+  # fit mlogit using d
+  clogit_dfidx <- mlogit::mlogit(formula = choice ~ x1 + x2 |0 ,  ##+0 to drop intercepts
+                         data    = d,           # Dataset
+                         rpar    = c(x1 = 'n',  # Both random parameters are assumed normal
+                                     x2 = 'n'), 
+                         R       = 500,         # Number of Halton draws
+                         panel   = TRUE,        # Activate Panel structure (more than one response per individual)
+                         method = 'bhhh')       # Optimization technique.
+
+  return(clogit_dfidx)
+}
+```
+
+Now we call the `partykit::mob()` function and provide our auxiliary function `mixl_for_partykit` as our model fit. 
+
+```{r fit_mob_mixl , message=FALSE}
+mob_mixl <- partykit::mob(formula = choice ~  x1_1 + x1_2 + x1_3 + x2_1 + x2_2 + x2_3 + id + id_ind + 0  | z1 +z2 + z3 + z4 + z5 ,
+                        data = df_wide,
+                        fit = mixl_for_partykit, #auxliar function just defined above
+                        cluster = id_ind,        #cluster standard errors
+                        control = partykit::mob_control(
+                          ytype = "data.frame",
+                          xtype = "data.frame",
+                          minsize = 100,    # Minumum number of choice sets to create a partition
+                          alpha   = 0.05 )) # Level of confidence to reject null hyphotesis
+                                              
+
+mob_mixl
+```
+
+Finally, we can also provide a graphical illustration of the estimated tree.
+
+```{r pressure, echo=FALSE}
+## Summary function inspired by: 
+## https://stackoverflow.com/questions/65495322/partykit-modify-terminal-node-to-include-standard-deviation-and-significance-of/65500344#65500344
+fn_summary_for_partykit_plots <- function(info, digits = 2) {
+  n <- info$nobs
+  individuals <- length(unique(info$object$model$idx$id))
+  c(paste("T =", n),
+    paste("N =", individuals))
+  
+}
+
+plot(mob_mixl,
+     terminal_panel = node_terminal,
+     tp_args = list(FUN = fn_summary_for_partykit_plots,
+                      fill = "white"))
+```
+
+
+---------------------------------------
+
+## MOB algorithm as variable selection
+
+In our article we also provided an illustration of one possible way to use the MOB algorithm as a variable selection step for the allocation model of Latent Class models. You can find this code in the script `\simulations_replication\MOB_MNL_on_LCMIXL_data.R`.
+
+
+
+

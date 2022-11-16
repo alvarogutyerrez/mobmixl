@@ -1,0 +1,3 @@
+Álvaro's note: Since the LC-MIXL models will take a couple of days to run, I pushed them as jobs so they can run in parallel and without disturbing the R session. To do so you have to lunch the R script called "_launch_all_LC_MIXL_models_as_jobs.R" inside of each folder for different allocation models. 
+
+To replicate the Table and Figure for LC-MIXL models you have to run the script called: LC_MIXL_models_LaTeX_table_generator.R

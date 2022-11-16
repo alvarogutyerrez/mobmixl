@@ -1,0 +1,6 @@
+.Rproj.user
+.Rhistory
+.RData
+.Ruserdata
+empirical_application/MobMixlogit_models/MobMixlogit_Normal.rds
+empirical_application/MobMixlogit_models/MobMixlogit_Triangular.rds
