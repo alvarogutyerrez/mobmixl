@@ -103,7 +103,7 @@ Then we call the `partykit::mob()` function and provide our auxiliary function `
                           alpha   = 0.05 )))      # Level of confidence to reject null hypothesis
 ```
 
-Finally, we can also provide a graphical illustration of the estimated tree.
+Finally, we can also provide a graphical illustration of the estimated tree. The figure shows that a first partition was made using variable $Z_1$, and then a subsequent partition on $Z_2$. We observe also that both tests rejected the hypothesis of parameter stability with $p$-values smaller than 0.001. 
 
 ```{r pressure, echo=FALSE}
 ## Summary function inspired by: 
