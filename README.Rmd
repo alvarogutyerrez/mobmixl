@@ -1,28 +1,25 @@
 ---
-title: "Replication files for Gutiérrez-Vargas, Vandebroek & Meulders (2023) "
+title: "Modelling preference heterogeneity using model-based decision trees [(Gutiérrez-Vargas, Vandebroek & Meulders, 2022)](https://www.sciencedirect.com/science/article/pii/S1755534522000501)"
 output: github_document
 date: '2022-11-15'
 ---
 
-This repository has all the necesary functions to replicate the results form Gutiérrez-Vargas, Vandebroek & Meulders (2023) forthcoming at the Journal of Choice Modelling. 
+This repository has all the necessary functions to replicate the results from the article *"Modelling preference heterogeneity using model-based decision trees"* [(Gutiérrez-Vargas, Vandebroek & Meulders, 2022)](https://www.sciencedirect.com/science/article/pii/S1755534522000501) forthcoming at the [Journal of Choice Modelling](https://www.sciencedirect.com/journal/journal-of-choice-modelling) you can find the In Press Journal pre-print [here](https://www.sciencedirect.com/science/article/pii/S1755534522000501).
 
-The source code is contained in a small R package I developed to store all the necesary functions which is called `MobMixlogit` and can be found in the [`\src`](https://github.com/alvarogutyerrez/mobmixl/tree/main/src) folder and can be installed locally by running the R script [`\src\install_MobMixlogit.R`](https://github.com/alvarogutyerrez/mobmixl/blob/main/src/install_MobMixlogit.R)
+The source code is contained in a small R package I developed to store all the necessary functions which is called `MobMixlogit` and can be found in the [`\src`](https://github.com/alvarogutyerrez/mobmixl/tree/main/src) folder and can be installed locally by running the R script [`\src\install_MobMixlogit.R`](https://github.com/alvarogutyerrez/mobmixl/blob/main/src/install_MobMixlogit.R)
 
 The different parts of the article are organized in different folders:
 
-* [`\simulations_replication`](https://github.com/alvarogutyerrez/mobmixl/tree/main/simulations_replication): contains the replications from sections 5 and 6.
-* [`\empirical_application`](https://github.com/alvarogutyerrez/mobmixl/tree/main/empirical_application): contains the replications from section 7.
+-   [`\simulations_replication`](https://github.com/alvarogutyerrez/mobmixl/tree/main/simulations_replication): contains the replications from sections 5 and 6.
+-   [`\empirical_application`](https://github.com/alvarogutyerrez/mobmixl/tree/main/empirical_application): contains the replications from section 7.
 
----------------------------------------
-
+------------------------------------------------------------------------
 
 ```{r setup, include=FALSE}
 knitr::opts_chunk$set(echo = TRUE)
 ```
 
-
-
-## Small example:   Decision Tree with a Mixed Logit at the end leaves.
+## Small example: Decision Tree with a Mixed Logit at the end leaves.
 
 Here is a brief illustration on how to implement a Mixed Logit at the end leaves using the MOB algorithm. We start by creating some data that contains a partition.
 
@@ -52,7 +49,7 @@ df_wide <- stats::reshape(data      = df,
                           sep       = "_")
 ```
 
-Now we have to create an auxiliary function that will be useful to run the Mixed Logit model using `mlogit`.
+Now we have to create an auxiliary function that will be useful to run the Mixed Logit model using `mlogit`. This way of constructing the auxiliary function was greatly inspired by an answer given by professor [https://www.zeileis.org/](Achim%20Zeileis) on [https://stackoverflow.com/questions/67366612/partykitmob-mlogit-error-no-suitable-fitting-function-specified](StackOverflow).
 
 ```{r mixl_for_partykit , message=FALSE}
 # Create a auxiliar function to make mlogit work together with partykit.
@@ -85,7 +82,7 @@ mixl_for_partykit <- function(y,
 }
 ```
 
-Then we call the `partykit::mob()` function and provide our auxiliary function `mixl_for_partykit` as our model fit to it. 
+Then we call the `partykit::mob()` function and provide our auxiliary function `mixl_for_partykit` as our model fit to it.
 
 ```{r fit_mob_mixl , message=FALSE}
 (mob_mixl <- partykit::mob(formula = choice ~      # Choice variable
@@ -103,7 +100,7 @@ Then we call the `partykit::mob()` function and provide our auxiliary function `
                           alpha   = 0.05 )))      # Level of confidence to reject null hypothesis
 ```
 
-Finally, we can also provide a graphical illustration of the estimated tree. The figure shows that a first partition was made using variable $Z_1$, and then a subsequent partition on $Z_2$. We observe also that both tests rejected the hypothesis of parameter stability with $p$-values smaller than 0.001. 
+Finally, we can also provide a graphical illustration of the estimated tree. The figure shows that a first partition was made using variable $Z_1$, and then a subsequent partition on $Z_2$. We observe also that both tests rejected the hypothesis of parameter stability with $p$-values smaller than 0.001. Some other ways of presenting the end nodes can be found [https://stackoverflow.com/questions/65495322/partykit-modify-terminal-node-to-include-standard-deviation-and-significance-of](here) and [https://stackoverflow.com/questions/65734766/generate-table-with-side-by-side-node-models-of-partykitmob-object](here).
 
 ```{r pressure, echo=FALSE}
 ## Summary function inspired by: 
@@ -122,13 +119,8 @@ plot(mob_mixl,
                       fill = "white"))
 ```
 
-
----------------------------------------
+------------------------------------------------------------------------
 
 ## MOB algorithm as variable selection
 
 In our article we also provided an illustration of one possible way to use the MOB algorithm as a variable selection step for the allocation model of Latent Class models. You can find this code in the script [`\simulations_replication\MOB_MNL_on_LCMIXL_data.R`](https://github.com/alvarogutyerrez/mobmixl/blob/main/empirical_application/MOB_as_diagnostic_tool/MOB_MNL_diagnostic.R).
-
-
-
-
