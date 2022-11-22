@@ -1,6 +1,4 @@
 Modelling preference heterogeneity using model-based decision trees
-[(Gutiérrez-Vargas, Vandebroek & Meulders,
-2022)](https://www.sciencedirect.com/science/article/pii/S1755534522000501)
 ================
 2022-11-15
 
@@ -9,8 +7,8 @@ from the article *“Modelling preference heterogeneity using model-based
 decision trees”* [(Gutiérrez-Vargas, Vandebroek & Meulders,
 2022)](https://www.sciencedirect.com/science/article/pii/S1755534522000501)
 forthcoming at the [Journal of Choice
-Modelling](https://www.sciencedirect.com/journal/journal-of-choice-modelling)
-you can find the In Press Journal pre-print
+Modelling](https://www.sciencedirect.com/journal/journal-of-choice-modelling).
+You can find the In Press pre-print
 [here](https://www.sciencedirect.com/science/article/pii/S1755534522000501).
 
 The source code is contained in a small R package I developed to store
@@ -64,8 +62,8 @@ df_wide <- stats::reshape(data      = df,
 Now we have to create an auxiliary function that will be useful to run
 the Mixed Logit model using `mlogit`. This way of constructing the
 auxiliary function was greatly inspired by an answer given by professor
-[https://www.zeileis.org/](Achim%20Zeileis) on
-[https://stackoverflow.com/questions/67366612/partykitmob-mlogit-error-no-suitable-fitting-function-specified](StackOverflow).
+[Achim Zeileis](https://www.zeileis.org/) on
+[StackOverflow](https://stackoverflow.com/questions/67366612/partykitmob-mlogit-error-no-suitable-fitting-function-specified).
 
 ``` r
 # Create a auxiliar function to make mlogit work together with partykit.
@@ -98,8 +96,10 @@ mixl_for_partykit <- function(y,
 }
 ```
 
-Then we call the `partykit::mob()` function and provide our auxiliary
-function `mixl_for_partykit` as our model fit to it.
+Then we call the
+[`partykit::mob()`](https://rdrr.io/cran/partykit/man/mob.html) function
+and provide our auxiliary function `mixl_for_partykit` as our model fit
+to it.
 
 ``` r
 (mob_mixl <- partykit::mob(formula = choice ~      # Choice variable
@@ -143,17 +143,30 @@ function `mixl_for_partykit` as our model fit to it.
 
 Finally, we can also provide a graphical illustration of the estimated
 tree. The figure shows that a first partition was made using variable
-![Z_1](https://latex.codecogs.com/png.image?%5Cdpi%7B110%7D&space;%5Cbg_white&space;Z_1 "Z_1"),
-and then a subsequent partition on
-![Z_2](https://latex.codecogs.com/png.image?%5Cdpi%7B110%7D&space;%5Cbg_white&space;Z_2 "Z_2").
-We observe also that both tests rejected the hypothesis of parameter
-stability with
-![p](https://latex.codecogs.com/png.image?%5Cdpi%7B110%7D&space;%5Cbg_white&space;p "p")-values
+Z_1, and then a subsequent partition on Z_2. We observe also that both
+tests rejected the hypothesis of parameter stability with p-values
 smaller than 0.001. Some other ways of presenting the end nodes can be
 found
-[https://stackoverflow.com/questions/65495322/partykit-modify-terminal-node-to-include-standard-deviation-and-significance-of](here)
+[here](https://stackoverflow.com/questions/65495322/partykit-modify-terminal-node-to-include-standard-deviation-and-significance-of)
 and
-[https://stackoverflow.com/questions/65734766/generate-table-with-side-by-side-node-models-of-partykitmob-object](here).
+[here](https://stackoverflow.com/questions/65734766/generate-table-with-side-by-side-node-models-of-partykitmob-object).
+
+``` r
+## Summary function inspired by: 
+## https://stackoverflow.com/questions/65495322/partykit-modify-terminal-node-to-include-standard-deviation-and-significance-of/65500344#65500344
+fn_summary_for_partykit_plots <- function(info, digits = 2) {
+  n <- info$nobs
+  individuals <- length(unique(info$object$model$idx$id))
+  c(paste("T =", n),
+    paste("N =", individuals))
+  
+}
+
+plot(mob_mixl,
+     terminal_panel = node_terminal,
+     tp_args = list(FUN = fn_summary_for_partykit_plots,
+                      fill = "white"))
+```
 
 ![](README_files/figure-gfm/pressure-1.png)<!-- -->
 
