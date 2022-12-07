@@ -1,10 +1,9 @@
 ---
 title: "Modelling preference heterogeneity using model-based decision trees"
 output: github_document
-date: '2022-11-15'
 ---
 
-This repository has all the necessary functions to replicate the results from the article *"Modelling preference heterogeneity using model-based decision trees"* [(Gutiérrez-Vargas, Vandebroek & Meulders, 2022)](https://www.sciencedirect.com/science/article/pii/S1755534522000501) forthcoming at the [Journal of Choice Modelling](https://www.sciencedirect.com/journal/journal-of-choice-modelling). You can find the In Press pre-print [here](https://www.sciencedirect.com/science/article/pii/S1755534522000501).
+This repository has all the necessary functions to replicate the results from the article *"Modelling preference heterogeneity using model-based decision trees"* [(Gutiérrez-Vargas, Vandebroek & Meulders, 2023)](https://www.sciencedirect.com/science/article/pii/S1755534522000501) forthcoming at the [Journal of Choice Modelling](https://www.sciencedirect.com/journal/journal-of-choice-modelling). You can find the In Press pre-print [here](https://www.sciencedirect.com/science/article/pii/S1755534522000501).
 
 The source code is contained in a small R package I developed to store all the necessary functions which is called `MobMixlogit` and can be found in the [`\src`](https://github.com/alvarogutyerrez/mobmixl/tree/main/src) folder and can be installed locally by running the R script [`\src\install_MobMixlogit.R`](https://github.com/alvarogutyerrez/mobmixl/blob/main/src/install_MobMixlogit.R)
 
@@ -12,6 +11,24 @@ The different parts of the article are organized in different folders:
 
 -   [`\simulations_replication`](https://github.com/alvarogutyerrez/mobmixl/tree/main/simulations_replication): contains the replications from sections 5 and 6.
 -   [`\empirical_application`](https://github.com/alvarogutyerrez/mobmixl/tree/main/empirical_application): contains the replications from section 7.
+
+------------------------------------------------------------------------
+
+For citations please use:
+
+```
+@article{gutierrez_vargas_2023,
+title = {Modeling preference heterogeneity using model-based decision trees},
+journal = {Journal of Choice Modelling},
+volume = {46},
+pages = {100393},
+year = {2023},
+issn = {1755-5345},
+doi = {https://doi.org/10.1016/j.jocm.2022.100393},
+url = {https://www.sciencedirect.com/science/article/pii/S1755534522000501},
+author={Guti{\'e}rrez-Vargas, {\'A}lvaro A and Meulders, Michel and Vandebroek, Martina}
+}
+```
 
 ------------------------------------------------------------------------
 
@@ -124,3 +141,9 @@ plot(mob_mixl,
 ## MOB algorithm as variable selection
 
 In our article we also provided an illustration of one possible way to use the MOB algorithm as a variable selection step for the allocation model of Latent Class models. You can find this code in the script [`\simulations_replication\MOB_MNL_on_LCMIXL_data.R`](https://github.com/alvarogutyerrez/mobmixl/blob/main/empirical_application/MOB_as_diagnostic_tool/MOB_MNL_diagnostic.R).
+
+
+
+
+
+

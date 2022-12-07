@@ -1,11 +1,10 @@
 Modelling preference heterogeneity using model-based decision trees
 ================
-2022-11-15
 
 This repository has all the necessary functions to replicate the results
 from the article *“Modelling preference heterogeneity using model-based
 decision trees”* [(Gutiérrez-Vargas, Vandebroek & Meulders,
-2022)](https://www.sciencedirect.com/science/article/pii/S1755534522000501)
+2023)](https://www.sciencedirect.com/science/article/pii/S1755534522000501)
 forthcoming at the [Journal of Choice
 Modelling](https://www.sciencedirect.com/journal/journal-of-choice-modelling).
 You can find the In Press pre-print
@@ -24,6 +23,22 @@ The different parts of the article are organized in different folders:
     contains the replications from sections 5 and 6.
 -   [`\empirical_application`](https://github.com/alvarogutyerrez/mobmixl/tree/main/empirical_application):
     contains the replications from section 7.
+
+------------------------------------------------------------------------
+
+For citations please use:
+
+    @article{gutierrez_vargas_2023,
+    title = {Modeling preference heterogeneity using model-based decision trees},
+    journal = {Journal of Choice Modelling},
+    volume = {46},
+    pages = {100393},
+    year = {2023},
+    issn = {1755-5345},
+    doi = {https://doi.org/10.1016/j.jocm.2022.100393},
+    url = {https://www.sciencedirect.com/science/article/pii/S1755534522000501},
+    author={Guti{\'e}rrez-Vargas, {\'A}lvaro A and Meulders, Michel and Vandebroek, Martina}
+    }
 
 ------------------------------------------------------------------------
 
